@@ -4,7 +4,6 @@
   "description": "Authorization and authentication service .",
   "main": "server.js",
   "scripts": {
-    "test": "test",
     "start": "node server.js",
     "nodemon": "nodemon server.js"
   },
