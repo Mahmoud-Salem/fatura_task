@@ -4,7 +4,7 @@
   "description": "Authorization and authentication service .",
   "main": "server.js",
   "scripts": {
-    "test" : "jest",
+    "test": "jest",
     "start": "node server.js",
     "nodemon": "nodemon server.js"
   },
@@ -22,7 +22,9 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.2",
-    "node-cron": "^3.0.0"
+    "node-cron": "^3.0.0",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
     "jest": "^27.0.6",

@@ -6,7 +6,6 @@ const cors = require('cors');
 require('dotenv').config();
 
 
-
 // Initializing app
 var app = express();
 
@@ -16,7 +15,6 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
-
 
 
 // Requiring routes

@@ -2,14 +2,13 @@ const app = require('../app');
 const request = require("supertest");
 const database = require("../database");
 const bcrypt = require('bcrypt');
-
-database.connectDB();
 const client = require('../models/client');
 
 
 
 beforeAll(async () => {
 
+    await database.connectDB();
     const pass = await bcrypt.hash('ma',10);
     const pass2 = await bcrypt.hash('musk',10);
     const client_1 = {
@@ -23,7 +22,15 @@ beforeAll(async () => {
         permissions : ['/permissions']
     }
     
-    client.create([client_1,client_2]);
+   await client.create([client_1,client_2]);
+  });
+
+
+afterAll(async () => {
+
+    await client.remove({username: 'jack'});
+    await client.remove({username: 'elon'});
+    database.disconnectDB();
   });
 
 describe('login test', () => {
