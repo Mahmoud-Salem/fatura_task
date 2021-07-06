@@ -6,6 +6,7 @@ const client = require('../models/client');
 
 
 
+// before all tests connect the db add some mock entried to db to test with.
 beforeAll(async () => {
 
     await database.connectDB();
@@ -25,7 +26,7 @@ beforeAll(async () => {
    await client.create([client_1,client_2]);
   });
 
-
+// after all tests remove mock entries and close db connection
 afterAll(async () => {
 
     await client.remove({username: 'jack'});
@@ -33,8 +34,10 @@ afterAll(async () => {
     database.disconnectDB();
   });
 
+  // login test
 describe('login test', () => {
     it('login should return access and refresh token', async () => {
+        // if client login is valid the response should return access and refresh tokens
         const res = await request(app)
             .post('/api/client/login')
             .send({
@@ -47,8 +50,10 @@ describe('login test', () => {
     })
   })
 
+  // refresh token test
   describe('login refresh test', () => {
     it('should refresh access token', async () => {
+        // if refresh token present the response should return a new access token
         const login = await request(app)
             .post('/api/client/login')
             .send({
@@ -64,8 +69,10 @@ describe('login test', () => {
     })
   })
 
+  // client logout test
   describe('login logout test', () => {
     it('logout and put refresh token on blacklist', async () => {
+        // when requested with refresh token the response has access and refrestoken to null
         const login = await request(app)
             .post('/api/client/login')
             .send({
@@ -80,9 +87,10 @@ describe('login test', () => {
 
     })
   })
-
+  // login permission
   describe('login permissions test', () => {
     it('show my permissions ', async () => {
+        // route to show my permission a list of permissions should shown
         const login = await request(app)
             .post('/api/client/login')
             .send({
@@ -97,6 +105,7 @@ describe('login test', () => {
     })
   })
 
+  // add permission route
   describe('login add permission test', () => {
     it('add permission to another user', async () => {
         const login = await request(app)
@@ -112,6 +121,7 @@ describe('login test', () => {
                 username : 'elon',
                 permission : '/addPermission'
             })
+            // response message for success request
         expect(add.body.message).toBe('permission given successfully');
 
     })

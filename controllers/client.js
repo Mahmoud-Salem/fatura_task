@@ -6,6 +6,13 @@ const bcrypt = require('bcrypt');
 const cron = require('node-cron');
 
 
+/*
+    Cron job to update blacklist collections
+    -- every day at midnight check all tokens
+        -- if token has passed more than 5 days which is the expiration date of the refresh token 
+            -- delete this token from collection
+
+*/
 cron.schedule('59 23 * * *', () => {
 
     console.log('update blacklist');
@@ -28,16 +35,20 @@ cron.schedule('59 23 * * *', () => {
 });
 
 
+// Client login controller
 exports.loginClient = (req, res) => {
+    // find a client with this username
     Client.findOne({username: req.body.username, isDeleted : false})
     .then(client => {
         if(client){
+            // if client found verify password with the saved hashed password in the db
             bcrypt.compare(req.body.password, client.password, (err, result) => {
                 delete client.password;
                 delete client.isDeleted;
                 if(err)
                     res.status(500).json({success:false, message:"Internal server error !!"});
                 if(result){
+                    // return accesstokena and refresh token for client to authenticate with
                     const accessToken = jwt.sign({client}, process.env.SECRET_KEY, { expiresIn: '5h'});
                     const refreshToken = jwt.sign({client}, process.env.SECRET_KEY, { expiresIn: '3d'});
                     res.status(200).json({client, accessToken, refreshToken});
@@ -54,11 +65,14 @@ exports.loginClient = (req, res) => {
 }
 
 
+// client logout route
 exports.clientLogout = (req, res, next) => {
+    // client logout require a valid refresh token with the request
 
     var refreshToken = req.get('refresh-token');
     if(refreshToken)
     {
+        // save the refresh token in the db for enforcing invalidating this session
         const blocked = {
             token : refreshToken,
         };
@@ -77,13 +91,15 @@ exports.clientLogout = (req, res, next) => {
 
 
 
+// controller for user to add permission to another user
 exports.addPermission = (req, res, next) => {
 
+    // check the username and permission is existing in the request body
     if( !req.body.username || !req.body.permission ){
         res.status(400).json({success:false,message:"bad request !!"});
     }
     else {
-
+        // update this client permission
         Client.updateOne({username : req.body.username}, {$addToSet: {permissions : req.body.permission}})
         .then (
             resp => res.status(200).json({success:true,message:"permission given successfully"})
@@ -96,6 +112,7 @@ exports.addPermission = (req, res, next) => {
 
 }
 
+// controller to get clients own permissions
 exports.getPermissions = (req, res, next) => {
 
     res.status(200).json({success:true, permissions: req.body.client.permissions})
