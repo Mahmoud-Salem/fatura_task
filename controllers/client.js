@@ -64,7 +64,7 @@ exports.clientLogout = (req, res, next) => {
         };
         Blacklist.create(blocked)
         .then(resp =>{
-            res.status(200).json({ success: true, message: 'Logged Out Successfully', accesstoken: null, refreshToken:null });
+            res.status(200).json({ success: true, message: 'Logged Out Successfully', accessToken: null, refreshToken:null });
         })
         .catch(err => {
             console.log("logout error :", err);

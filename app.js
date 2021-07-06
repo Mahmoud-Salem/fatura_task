@@ -3,6 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
 const cors = require('cors');
+require('dotenv').config();
 
 
 
@@ -18,17 +19,13 @@ app.use(cors());
 
 
 
-// // view engine setup
-
-// app.set('view engine', 'html');
-// app.set('views', path.join(__dirname, '/public/views'));
-
 // Requiring routes
 var client = require('./routes/client.js');
 
 
 // Using routes
 app.use('/api/client',client);
+
 
 
 
