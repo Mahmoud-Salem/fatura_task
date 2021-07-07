@@ -1,6 +1,6 @@
 # fatura_task
 
-This project aims to build a service to used for authentication and authorization of clients.
+This project aims to build a service to be used for authentication and authorization of clients.
 
 ## Project Setup 
 
