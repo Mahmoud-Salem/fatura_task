@@ -36,6 +36,10 @@ This project aims to build a service to used for authentication and authorizatio
     * **Every client has a list of permissions stored with the client data in the database**
     * **When requesting a service a validator function run before to check whether this service can be provided for this client or not**
 
+
+
+    ![GitHub Logo](/use_case.png)
+
 ## API Routes
 ### Login Route
 ```
