@@ -1,6 +1,6 @@
 # fatura_task
 
-This project aims to build a service to used for authentication and authorization of clients.
+This project aims to build a service to be used for authentication and authorization of clients.
 
 ## Project Setup 
 
@@ -30,6 +30,7 @@ This project aims to build a service to used for authentication and authorizatio
 * Logout : 
     * **The service return a null for access token and refresh token to be set on the front-end or the party who uses the service**
     * **Then it stores the long-lived (JWT) refresh token in a blacklist to ensure that this user cannot continue this session**
+    * **Every Day a cron job runs to update the blacklist to remove refresh tokens that has expired**
 
 ### Authorization 
 * Permissions : 
